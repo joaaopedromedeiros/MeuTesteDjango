@@ -1,0 +1,32 @@
+<h1>cadastramento de aula</h1>
+
+<form action="{% url 'cadastraraulas' %}" method="post">
+
+    {% csrf_token %}
+
+    <label for="nome">
+        Nome da aula
+    </label>
+    <input type="text" name="aula">
+
+    <label for="subtitulo">
+        Subtitulo da aula
+    </label>
+    <input type="text" name="subtitulo">
+    <input type="submit">
+</form>
+
+<h2>Lista de aulas cadastradas</h2>
+
+{% for aula in aulas %}
+
+<br>
+<div style="border: 1px solid">
+    <p>Nome da aula: {{aula.nome}} </p>
+    <p>Subtitulo da aula: {{aula.subtitulo}} </p>
+    <a href="#">Editar</a> <a href="{% url 'apagaraula' idaula=aula.id %}">Apagar</a>
+</div>
+<br>
+
+{% endfor %}
+
