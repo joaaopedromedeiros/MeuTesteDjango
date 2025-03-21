@@ -37,11 +37,47 @@ class SimuladosView(View):
 class SimuladoView(View):
     def get(self, request, idsimulado):
         simulado_desejado = Simulado.objects.get(id=idsimulado)
-        
         questoes = Questao.objects.filter(simulado=simulado_desejado)
-        context = {'simulado': simulado_desejado, 'questoes': questoes}
 
+        # Verifica se o usuário já respondeu ao simulado
+        respostas_usuario = Resposta.objects.filter(user=request.user, simulado_origem=simulado_desejado)
 
-        return render(request,'paginas/simulado.html', context)
+        # Passa as respostas do usuário para o template
+        context = {
+            'simulado': simulado_desejado, 
+            'questoes': questoes,
+            'respostas_usuario': respostas_usuario
+        }
+
+        return render(request, 'paginas/simulado.html', context)
+
+    def post(self, request, idsimulado):
+        simulado = Simulado.objects.get(id=idsimulado)
+        user = request.user  # Captura o usuário autenticado
+
+        for key, value in request.POST.items():
+            if key.startswith("resposta_"):  # Identifica os inputs do formulário
+                questao_id = key.split("_")[1]  # Obtém o ID da questão
+                questao = Questao.objects.get(id=questao_id)
+
+                # Verifica se o usuário já respondeu essa questão antes
+                resposta_existente = Resposta.objects.filter(user=user, simulado_origem=simulado, questao=questao).first()
+
+                if resposta_existente:
+                    # Se já houver uma resposta, atualiza a resposta existente
+                    resposta_existente.resposta = value
+                    resposta_existente.save()
+                else:
+                    # Se não houver, cria uma nova resposta
+                    Resposta.objects.create(
+                        user=user,
+                        simulado_origem=simulado,
+                        questao=questao,
+                        resposta=value
+                    )
+
+        return redirect('simulados')  # Redireciona para a lista de simulados após salvar
+
+        
 
 

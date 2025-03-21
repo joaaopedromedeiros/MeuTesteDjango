@@ -4,25 +4,62 @@
     {% csrf_token %}
     {% for questao in questoes %}
     <div class="form-group">
-        <p>Número da questão: {{questao.numero_questao}}</p>
+        <p>Número da questão: {{ questao.numero_questao }}</p>
         <p>{{ questao.enunciado }}</p>
     </div>
+
+    <!-- Alternativa A -->
     <div class="form-group">
-        <input type="radio" id="alternativa_a_{{ questao.id }}" name="resposta_{{ questao.id }}" value="A">
+        <input type="radio" id="alternativa_a_{{ questao.id }}" name="resposta_{{ questao.id }}" value="A"
+        {% if respostas_usuario %}
+            {% for resposta in respostas_usuario %}
+                {% if resposta.questao.id == questao.id and resposta.resposta == 'A' %}
+                    checked
+                {% endif %}
+            {% endfor %}
+        {% endif %}>
         <label for="alternativa_a_{{ questao.id }}">A | {{ questao.alternativa_a }}</label>
     </div>
+
+    <!-- Alternativa B -->
     <div class="form-group">
-        <input type="radio" id="alternativa_b_{{ questao.id }}" name="resposta_{{ questao.id }}" value="B">
+        <input type="radio" id="alternativa_b_{{ questao.id }}" name="resposta_{{ questao.id }}" value="B"
+        {% if respostas_usuario %}
+            {% for resposta in respostas_usuario %}
+                {% if resposta.questao.id == questao.id and resposta.resposta == 'B' %}
+                    checked
+                {% endif %}
+            {% endfor %}
+        {% endif %}>
         <label for="alternativa_b_{{ questao.id }}">B | {{ questao.alternativa_b }}</label>
     </div>
+
+    <!-- Alternativa C -->
     <div class="form-group">
-        <input type="radio" id="alternativa_c_{{ questao.id }}" name="resposta_{{ questao.id }}" value="C">
+        <input type="radio" id="alternativa_c_{{ questao.id }}" name="resposta_{{ questao.id }}" value="C"
+        {% if respostas_usuario %}
+            {% for resposta in respostas_usuario %}
+                {% if resposta.questao.id == questao.id and resposta.resposta == 'C' %}
+                    checked
+                {% endif %}
+            {% endfor %}
+        {% endif %}>
         <label for="alternativa_c_{{ questao.id }}">C | {{ questao.alternativa_c }}</label>
     </div>
+
+    <!-- Alternativa D -->
     <div class="form-group">
-        <input type="radio" id="alternativa_d_{{ questao.id }}" name="resposta_{{ questao.id }}" value="D">
+        <input type="radio" id="alternativa_d_{{ questao.id }}" name="resposta_{{ questao.id }}" value="D"
+        {% if respostas_usuario %}
+            {% for resposta in respostas_usuario %}
+                {% if resposta.questao.id == questao.id and resposta.resposta == 'D' %}
+                    checked
+                {% endif %}
+            {% endfor %}
+        {% endif %}>
         <label for="alternativa_d_{{ questao.id }}">D | {{ questao.alternativa_d }}</label>
     </div>
+    
     <hr>
     {% endfor %}
     <button type="submit" class="btn btn-primary">Salvar</button>
