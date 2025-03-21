@@ -1,0 +1,14 @@
+<h1>Lista de simulados</h1>
+
+{% for simulado in simulados %}
+<a href="{% url 'simulado_especifico' simulado.id %}">
+    <br>
+    <hr>
+    <p>Simulado: {{simulado.nome}}</p>
+    <p>Ano: {{simulado.ano}}</p>
+    <hr>
+    <br>
+</a>
+{% endfor %}
+
+
