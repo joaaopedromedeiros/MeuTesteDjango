@@ -1,0 +1,56 @@
+
+<hr>
+<div>
+    <a href="{% url 'home' %}">Home</a>
+</div>
+<a href="{% url 'simulados' %}"> Simulado </a>
+
+
+
+<hr>
+
+<h1>Aula sendo editada: <span id="nomeAula">{{ aula.nome }}</span></h1>
+<h2>Subtítulo da aula: <span id="subtituloAula">{{ aula.subtitulo }}</span></h2> <!-- Apenas adicionou um span com id para subtituir os dados-->
+
+
+<form id="editarAulaForm" action="" method="post"> <!-- Adicionei um id para o fetch -->
+    {% csrf_token %}
+    <label for="nome">Nome</label>
+    <input type="text" name="nome" value="{{aula.nome}}" id="nome"> <!-- Adiconei o id para capturar com o js-->
+    <label for="subtitulo"  >Subtitulo</label>
+    <input type="text" name="subtitulo" value="{{aula.subtitulo}}" id="subtitulo"> <!-- Adiconei o id para capturar com o js-->
+    <input type="submit" value="Atualizar">
+</form>
+
+<p id="mensagem"></p> <!-- Para informar se deu erro ou sucesso-->
+
+
+<!-- Deixando a página dinâmica com o js-->
+<script>
+    document.getElementById("editarAulaForm").addEventListener("submit", function(event) {
+        event.preventDefault(); // Evita recarregar a página
+
+        let formData = new FormData(this); // Captura os dados do formulário
+
+        fetch("{% url 'editaraula' id=aula.id %}", {  // Envia para a URL correta
+            method: "POST",
+            body: formData,
+            headers: {
+                "X-CSRFToken": "{{ csrf_token }}"
+            }
+        })
+        .then(response => response.json())  // Converte a resposta em JSON
+        .then(data => {
+            document.getElementById("mensagem").innerText = data.mensagem;
+
+            // Atualiza os campos do formulário com os novos dados salvos
+            document.getElementById("nome").value = data.nome;
+            document.getElementById("subtitulo").value = data.subtitulo;
+            
+            // Atualiza os títulos <h1> e <h2>
+                document.getElementById("nomeAula").innerText = data.nome;
+                document.getElementById("subtituloAula").innerText = data.subtitulo;
+        })
+        .catch(error => console.error("Erro:", error));
+    });
+</script>

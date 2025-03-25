@@ -1,6 +1,21 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="static/teste.css">
+</head>
+<body>
+    
+
+<img src="{% static 'mcqueen.jpg' %}" alt="" srcset="">
 <h1>cadastramento de aula</h1>
 <hr>
 <a href="{% url 'simulados' %}"> Simulado </a>
+<a href="{% url 'home' %}"></a>
+
 <hr>
 
 <form action="{% url 'cadastraraulas' %}" method="post">
@@ -27,9 +42,31 @@
 <div style="border: 1px solid">
     <p>Nome da aula: {{aula.nome}} </p>
     <p>Subtitulo da aula: {{aula.subtitulo}} </p>
-    <a href="#">Editar</a> <a href="{% url 'apagaraula' idaula=aula.id %}">Apagar</a>
+    <a href="{% url 'editaraula' aula.id %}">Editar</a> <a href="{% url 'apagaraula' idaula=aula.id %}">Apagar</a>
 </div>
 <br>
 
 {% endfor %}
 
+<hr>
+<h2>Mensagens dos usuários</h2>
+<hr>
+
+<section>
+<form action="">
+
+<label for="mensagem">Envie sua mensagem</label>
+<input type="text" placeholder="Escreva sua mensagem">
+<input type="submit" value="Enviar">
+
+
+</form>
+</section>
+
+<div style="border: 1px solid">
+    <p>Data de envio: Hoje</p>
+    <p>Nome do usuário: João </p>
+    <p>Mensagem do usuaário: Bom dia, galera!</p>
+</div>
+</body>
+</html>

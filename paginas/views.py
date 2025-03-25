@@ -78,6 +78,32 @@ class SimuladoView(View):
 
         return redirect('simulados')  # Redireciona para a lista de simulados após salvar
 
+from django.http import JsonResponse # precisa disso pra enviar o json
+
+class EditarView(View):
+    def get(self, request, id): #esse id do argumento precisa ter o mesmo nome da url
+        aulaselecionada= aulas.objects.get(id=id)
+        context = {'aula': aulaselecionada}
+        return render(request, "paginas/editaraula.html", context)
+    
+    def post(self, request, id):
+        aulaselecionada= aulas.objects.get(id=id)
+        nome = request.POST.get("nome")
+        subtitulo = request.POST.get("subtitulo")
+        aulaselecionada.nome = nome
+        aulaselecionada.subtitulo = subtitulo
+        aulaselecionada.save()
+        #context = {'aula': aulaselecionada}
+
+        return JsonResponse({
+            "mensagem": "Aula atualizada com sucesso!",
+            "nome": aulaselecionada.nome,
+            "subtitulo": aulaselecionada.subtitulo
+        })
+    
+        #return render(request,"paginas/editaraula.html", context)
+
+
         
 
 
