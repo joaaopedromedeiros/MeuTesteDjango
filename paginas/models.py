@@ -53,5 +53,47 @@ class Resposta(models.Model):
         return f'Usuario: {self.user}, Simulado: {self.simulado_origem}, Questão: {self.questao}, Resposta: {self.resposta} '
 
 
+class SimuladoTeste(models.Model):
+    id = models.AutoField(primary_key=True)
+    nome = models.CharField(max_length=255)
+    duracao = models.CharField(max_length=1) 
+    
+
+    def __str__(self):
+        return f'{self.id} - {self.nome} ({self.duracao})'
+
+class QuestaoSimulado(models.Model):
+    id = models.AutoField(primary_key=True)
+    id_simulado = models.ForeignKey(SimuladoTeste, on_delete=models.CASCADE, related_name="questoes" )
+    numero_questao = models.CharField(max_length=2) # Adiconei, não estava no diagrama
+    enunciado = models.CharField(max_length=10000)
+    imagem = models.ImageField(upload_to='images/',blank=True, null=True) # para aonde fazer upload?
+
+    def __str__(self):
+        return f'Questão: {self.numero_questao} do Simulado: {self.id_simulado.nome}'
+    
+class TextoSimulado(models.Model):
+    id = models.AutoField(primary_key=True)
+    id_simulado = models.ForeignKey(SimuladoTeste, on_delete=models.CASCADE, related_name="textos" )
+    titulo = models.CharField(max_length=100)
+    conteudo = models.CharField(max_length=100000)
+    referencia = models.CharField(max_length=1000)
+    imagem = models.ImageField(upload_to='images/',blank=True, null=True) # para aonde fazer upload?
+
+    def __str__(self):
+        return f'Texto {self.titulo} do simulado {self.id_simulado.nome}'
+
+
+class QuestaoSimuladoAlternativa(models.Model):
+    id = models.AutoField(primary_key=True)
+    id_questao = models.ForeignKey(QuestaoSimulado, on_delete=models.CASCADE, related_name="alternativas"  )
+    correta = models.BooleanField(default=False)
+    texto = models.CharField(max_length=10000)
+    sla = models.CharField(max_length=1, default=1)
+
+    def __str__(self):
+        return f'Alternativa da questão {self.id_questao.numero_questao}, simulado {self.id_questao.id_simulado.nome}'
+
+
 
 

@@ -1,0 +1,18 @@
+<hr>
+<a href="{% url 'simulados' %}"> Simulado </a>
+<a href="{% url 'home' %}">Home</a>
+<a href="{% url 'login' %}"> Login </a>
+<a href="{% url 'cadastro' %}"> Cadastro </a>
+
+<hr>
+<h1>Cadastra-se no sistema!</h1>
+
+<form action="" method="post">
+    <label for="email-novo">Email para cadastro</label>
+    <input type="text" name="email-novo">
+    <label for="senha">Senha</label>
+    <input type="text" name="senha">
+    <label for="senha-confirmar">Confirmar senha</label>
+    <input type="text" name="senha-confirmar">
+    <input type="submit" value="cadastrar">
+</form>

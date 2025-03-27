@@ -14,9 +14,14 @@
 <h1>cadastramento de aula</h1>
 <hr>
 <a href="{% url 'simulados' %}"> Simulado </a>
-<a href="{% url 'home' %}"></a>
+<a href="{% url 'home' %}">Home</a>
+<a href="{% url 'login' %}"> Login </a>
+<a href="{% url 'cadastro' %}"> Cadastro </a>
+<a href="{% url 'verteste' %}"> TestandoDjango </a>
 
 <hr>
+
+<h2> Bem vindo! {{user}}</h2>
 
 <form action="{% url 'cadastraraulas' %}" method="post">
 

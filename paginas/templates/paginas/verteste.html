@@ -1,0 +1,11 @@
+
+<p>Nome do simulado: {{simulado.nome}}</p>
+
+<p>Questoes do simulado:</p>
+<hr>
+
+{% for questao in questoes %}
+
+<p>{{questao.enunciado}}</p>
+
+{% endfor %}

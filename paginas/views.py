@@ -2,11 +2,14 @@ from django.shortcuts import render, redirect
 from django.views import View
 from .models import aulas
 from .models import *
+
 # Create your views here.
 
 def home(request):
     aulass = aulas.objects.all()
-    return render(request, "paginas/home.html", {'aulas': aulass})
+    usuario = request.user
+    context = {'aulas': aulass, 'user': usuario}
+    return render(request, "paginas/home.html", context )
 
 def cadastrar_aula(request):
     if request.method == 'POST':
@@ -102,6 +105,23 @@ class EditarView(View):
         })
     
         #return render(request,"paginas/editaraula.html", context)
+
+class LoginView(View):
+    def get(self, request):
+        return render(request, "paginas/login.html")
+
+class CadastroView(View):
+    def get(self, request):
+        return render(request, "paginas/cadastro.html")
+
+
+class  SimuladoTestee(View):
+    def get(self, request):
+        simulado = SimuladoTeste.objects.get(nome='Teste')
+        questoes = simulado.questoes.all()
+        context = {'simulado': simulado, 'questoes': questoes}
+
+        return render(request, "paginas/verteste.html", context)
 
 
         
